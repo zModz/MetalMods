@@ -1,7 +1,7 @@
 <?php 
 require_once("includes/db/db_conn.php");
 
-
+// checks se existe um alerta
 if(isset($_GET["alerta"])){
     $msgAlerta = "<p class='alertas'>SUCESSO!</p>";
 }
@@ -9,13 +9,16 @@ else{
     $msgAlerta = "";
 }
 
+// sql shenenigans
 $sql = "SELECT 	* FROM musicas ORDER BY nome_m ASC";
 $result = $conn -> query($sql);
 
+// limpa characteres especiais
 function clean($string) {
-    return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+    return preg_replace('/[^A-Za-z0-9\-]/', '', $string);
 }
-
+// ISTO É PARA LIMPAR O NOME DO ALBUM QUANDO VEM DA BASE DE DADOS
+// PARA SER COMPARADO COM O NOME DO FICHEIRO QUE CONTEM A ARTE DO ALBUM
 ?>
 
 <!DOCTYPE html>
@@ -29,8 +32,9 @@ function clean($string) {
     <title>Project</title>
 </head>
 <body>
-    <?php include("includes/webpage/nav.php") ?>
     <!-- NAV -->
+    <?php include("includes/webpage/nav.php") ?>
+    <!-- CONTENT -->
     <div id="content">
         <h1 class="pageTitle">EDITAR</h1>
         <?php
@@ -66,10 +70,3 @@ function clean($string) {
     <?php include("includes/webpage/footer.php") ?>
 </body>
 </html>
-
-
-<!-- 
-<div class="adBox">
-    <img class="adImg" src="media/ad.jpg" alt="">
-</div>
--->

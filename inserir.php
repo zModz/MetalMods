@@ -1,9 +1,7 @@
 <?php 
 require_once("includes/db/db_conn.php");
 
-// $sql = "SELECT 	* FROM musicas ORDER BY nome_m ASC";
-// $result = $conn -> query($sql);
-
+// sql insert inserts the things to insert
 if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST["Mtitulo"])){  
     $titulo = $_POST["Mtitulo"]; 
     $artista = $_POST["Martist"]; 
@@ -36,8 +34,9 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST["Mtitulo"])){
     <title>Project</title>
 </head>
 <body>
+  <!-- NAV -->
     <?php include("includes/webpage/nav.php") ?>
-    <!-- NAV -->
+    <!-- CONTENT -->
     <div id="content">
         <h1 class="pageTitle">INSERIR</h1>
         <form action="" method="post">
@@ -69,10 +68,3 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST["Mtitulo"])){
     <?php include("includes/webpage/footer.php") ?>
 </body>
 </html>
-
-
-<!-- 
-<div class="adBox">
-    <img class="adImg" src="media/ad.jpg" alt="">
-</div>
--->
