@@ -4,14 +4,20 @@ require_once("includes/db/db_conn.php");
 if(isset($_GET['ida'])){
     // get id
     $ida = $_GET['ida'];
-    $sqlUp = "SELECT titulo_m, nome_al, ano_al FROM album LEFT JOIN musica ON album.id_al = musica.album_id_al WHERE id_al = '$ida'";
-  
+    
+    // ALBUM INFO
+    $sqlUp = "SELECT titulo_m, nome_al, ano_al FROM album 
+              LEFT JOIN musica ON album.id_al = musica.album_id_al 
+              WHERE id_al = '$ida'";
     $result = mysqli_query($conn, $sqlUp);
-  
-    // $tituloM = $row["nome_m"]; 
-    // $artistaM = $row["artista_m"]; 
-    // $albumM = $row["album_m"]; 
-    // $anoM = $row["ano_m"];
+    
+    // SONG LIST
+    $sqlUp1 = "SELECT titulo_m, nome_al, ano_al FROM album 
+               LEFT JOIN musica ON album.id_al = musica.album_id_al 
+               WHERE id_al = '$ida'";
+    $result1 = mysqli_query($conn, $sqlUp1);
+    
+    $num_rows = $result1 -> num_rows;
 }
 
 // limpa characteres especiais
@@ -43,38 +49,36 @@ function clean($string) {
                     echo '<div class="album_banner">';
                     $albm = $row["nome_al"];
                     $nAlbm = clean($albm);
-                    
                     if(file_exists('media/'.$nAlbm.'.jpg')){
                         echo '<img class="songImg" src="media/'.$nAlbm.'.jpg" alt="default album cover">';
                     }
                     else{
                         echo '<img class="songImg" src="media/default-album-art.jpg" alt="default album cover">';
                     }
-
                     echo    '<div class="albumInfo">';
                     echo        '<p class="albumTitle">'.$row["nome_al"].'</p>';
-                    echo        '<p class="albumAno">ARTIST_NAME • '.$row["ano_al"].' • NºMUSICAS</p>';
+                    echo        '<p class="albumAno">ARTISTS_NAME • '.$row["ano_al"].' • '.$num_rows.' MUSICAS</p>';
                     echo    '</div>';
                     echo '</div>';
                     echo '<br>';
-                    echo '<h1 style="color: white;">MUSICAS</h1>';
-                }
-                
-                echo '<div class="musicShow">';
-                
-                if($result -> num_rows > 0){
-                    while($row = $result -> fetch_assoc()){                    
-                        echo    '<div class="songInfo">';
-                        echo        '<p class="songTitle" title="'.$row["titulo_m"].'">'.$row["titulo_m"].'</p>';
-                        echo        '<p class="songYear">'.$row["ano_al"].'</p>';
-                        echo    '</div>';
+                    if($result -> num_rows > 0){
+                        echo '<h1 style="color: white;">MUSICAS</h1>';
+                        echo '<div class="musicShow">';
+                        while($row = $result1 -> fetch_assoc()){                    
+                            echo    '<div class="songInfo">';
+                            echo        '<p class="songTitle">'.$row["titulo_m"].'</p>';           
+                            echo        '<p class="songYear">ARTISTS_NAME</p>';
+                            echo    '</div>';
+                        }
+                        echo '</div>';
                     }
+                    else{
+                        echo "<a class='easter'>Este album não tem musicas!</a>";
+                    }    
                 }
                 else{
-                    echo "<a href='https://open.spotify.com/playlist/0O8Oc3snLMOcGjDdi9yKY4?si=9d2c537ba8964904' class='easter'>Nada para mostrar</a>";
+                    echo "<a href='https://open.spotify.com/playlist/0O8Oc3snLMOcGjDdi9yKY4?si=9d2c537ba8964904' class='easter'>ID desconhecido!</a>";
                 }
-
-                echo '</div>';
             ?>
         </div>
     </div>

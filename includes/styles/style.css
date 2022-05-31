@@ -50,6 +50,23 @@ body{
     color: rgb(105, 105, 105)
 }
 
+.loginItm{
+    display: flex;
+}
+
+.loginItm .navItm{
+    float: right;
+    width: auto;
+    margin: 0px;
+    text-decoration: none;
+    text-align: right;
+    color: rgb(255, 255, 255)
+}
+
+.loginItm .navItm:hover{
+    color: rgb(105, 105, 105)
+}
+
 #content{
     width: 90%;
     height: auto;
