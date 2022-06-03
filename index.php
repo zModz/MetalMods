@@ -1,5 +1,7 @@
 <?php 
+session_start();
 require_once("includes/db/db_conn.php");
+include("includes/webpage/funcs.php");
 
 // sql shenenigans
 $sql = "SELECT * FROM album ORDER BY nome_al ASC";
@@ -21,7 +23,6 @@ else{
     $msgAlerta = "";
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,11 +31,14 @@ else{
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="includes/styles/style.css">
+    <script src="includes/webpage/uteis.js"></script>
     <title>MetalMods</title>
 </head>
 <body>
     <!-- NAV -->
-    <?php include("includes/webpage/nav.php") ?>
+    <?php 
+        include("includes/webpage/nav.php");
+    ?>
     <!-- CONTENT -->
     <div id="content">
         <?php echo $msgAlerta; ?>

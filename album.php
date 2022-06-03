@@ -1,21 +1,27 @@
 <?php 
+session_start();
 require_once("includes/db/db_conn.php");
+include("includes/webpage/funcs.php");
 
 if(isset($_GET['ida'])){
     // get id
     $ida = $_GET['ida'];
     
     // ALBUM INFO
-    $sqlUp = "SELECT titulo_m, nome_al, ano_al FROM album 
+    $sqlUp = "SELECT titulo_m, id_al, nome_al, ano_al, nome_a FROM album 
               LEFT JOIN musica ON album.id_al = musica.album_id_al 
+              LEFT JOIN musica_has_artista ON musica_id_m = musica.id_m 
+              LEFT JOIN artista ON artista.id_a = musica_has_artista.artista_id_a
               WHERE id_al = '$ida'";
     $result = mysqli_query($conn, $sqlUp);
     
     // SONG LIST
-    $sqlUp1 = "SELECT titulo_m, nome_al, ano_al FROM album 
+    $sqlUp1 = "SELECT titulo_m, nome_al, ano_al, id_m FROM album 
                LEFT JOIN musica ON album.id_al = musica.album_id_al 
                WHERE id_al = '$ida'";
     $result1 = mysqli_query($conn, $sqlUp1);
+
+    
     
     $num_rows = $result1 -> num_rows;
 }
@@ -36,6 +42,7 @@ function clean($string) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="includes/styles/style.css">
+    <script src="includes/webpage/uteis.js"></script>
     <title>MetalMods</title>
 </head>
 <body>
@@ -57,7 +64,7 @@ function clean($string) {
                     }
                     echo    '<div class="albumInfo">';
                     echo        '<p class="albumTitle">'.$row["nome_al"].'</p>';
-                    echo        '<p class="albumAno">ARTISTS_NAME • '.$row["ano_al"].' • '.$num_rows.' MUSICAS</p>';
+                    echo        '<p class="albumAno">'.$row["nome_a"].' • '.$row["ano_al"].' • '.$num_rows.' MUSICAS  •  '.AlbmGenre($row["id_al"]).'</p>';
                     echo    '</div>';
                     echo '</div>';
                     echo '<br>';
@@ -66,8 +73,23 @@ function clean($string) {
                         echo '<div class="musicShow">';
                         while($row = $result1 -> fetch_assoc()){                    
                             echo    '<div class="songInfo">';
-                            echo        '<p class="songTitle">'.$row["titulo_m"].'</p>';           
-                            echo        '<p class="songYear">ARTISTS_NAME</p>';
+                            echo        '<p class="songTitle">'.$row["titulo_m"].'</p>';
+                            //ARTIST LIST
+                            $idm = $row["id_m"];
+                            $sqlUp2 = "SELECT id_m, artista.id_a, artista.nome_a FROM musica 
+                                        LEFT JOIN musica_has_artista ON musica_id_m = musica.id_m 
+                                        LEFT JOIN artista ON artista.id_a = musica_has_artista.artista_id_a
+                                        WHERE id_m = '$idm'";
+                            $result2 = mysqli_query($conn, $sqlUp2);
+                            echo '<p class="songYear">';
+                            while($rowArt = $result2 -> fetch_assoc()){
+                                if($rowArt["id_a"] > 1 && $rowArt["id_m"] == $idm){
+                                    echo ", ".$rowArt["nome_a"];
+                                }else{
+                                    echo $rowArt["nome_a"];
+                                }
+                            } 
+                            echo '</p>';        
                             echo    '</div>';
                         }
                         echo '</div>';

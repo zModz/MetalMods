@@ -1,5 +1,6 @@
 <div id="nav">
-    <div class="navItm">
+    <div class="navItns">
+        <a class="navItm"></a>
         <a class="navItm" href="index.php">Home</a>
         <a class="navItm" href="inserir.php">Inserir</a>
         <img class="navItm" id="imgLogo" src="media/MM_Logo.png" alt="logo image" srcset="">
@@ -7,6 +8,16 @@
         <a class="navItm" href="remover.php">Remover</a>
     </div>
     <div class="loginItm">
-        <a class="navItm" href="">Login/Register</a>
+    <?php
+        if(isset($_SESSION['user'])){
+            $user=$_SESSION['user'];
+            $msgLog = "<p class='logP2'>Benvindo $user - <a href='logout.php'>logout</a></p>";
+            echo $msgLog;
+        }
+        else{
+            echo'<button id="loginBtn" class="navItm">Login/Register</button>';
+        }
+    ?>
     </div>
 </div>
+<?php include("includes/webpage/modal.php"); ?>
