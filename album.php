@@ -65,6 +65,13 @@ function clean($string) {
                     echo    '<div class="albumInfo">';
                     echo        '<p class="albumTitle">'.$row["nome_al"].'</p>';
                     echo        '<p class="albumAno">'.$row["nome_a"].' • '.$row["ano_al"].' • '.$num_rows.' MUSICAS  •  '.AlbmGenre($row["id_al"]).'</p>';
+                    if(isset($_SESSION['user'])){
+                        echo        '<div class="albumBtns">';
+                        echo            '<a class="alBtn" href="addMusic.php?ida='.$row["id_al"].'">ADD MUSICA</button>';
+                        echo            '<a class="albtn">EDIT ALBUM</button>';
+                        echo            '<a class="albtn">REMOVE ALBUM</button>';
+                        echo        '</div>';
+                    }
                     echo    '</div>';
                     echo '</div>';
                     echo '<br>';

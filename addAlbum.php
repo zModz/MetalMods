@@ -1,14 +1,18 @@
 <?php 
+session_start();
 require_once("includes/db/db_conn.php");
+
+if(!$_SESSION["user"]){
+  header("erro.php");
+}
+
 
 // sql insert inserts the things to insert
 if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST["Mtitulo"])){  
     $titulo = $_POST["Mtitulo"]; 
-    $artista = $_POST["Martist"]; 
-    $album = $_POST["Malbum"]; 
-    $ano = $_POST["Mano"];
+    $idAl = $_GET["ida"];
   
-    $sql = "INSERT INTO musicas (nome_m, artista_m, album_m, ano_m) VALUES ('$titulo', '$artista', '$album', '$ano')";
+    $sql = "INSERT INTO musica (titulo_m, album_id_al) VALUES ('$titulo', '$idAl')";
     $result = $conn -> query($sql);
   
     if($result === TRUE){
@@ -44,18 +48,6 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST["Mtitulo"])){
             <tr>
               <td>Titulo da Musica: </td>
               <td><input type="text" name="Mtitulo" required> </td>
-            </tr>
-            <tr>
-              <td title="Separe os artistas por virgulas">Artista(s): </td>
-              <td><input type="text" name="Martist" required> </td>
-            </tr>
-            <tr>
-              <td>Album: </td>
-              <td><input type="text" name="Malbum" required> </td>
-            </tr>
-            <tr>
-              <td>Ano de lançamento: </td>
-              <td><input type="number" name="Mano" required> </td>
             </tr>
             <tr>
               <td> </td>
