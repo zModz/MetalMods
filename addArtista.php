@@ -12,12 +12,12 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST["Mtitulo"])){
     $titulo = $_POST["Mtitulo"]; 
     $idAl = $_GET["ida"];
   
-    $sql = "INSERT INTO musica (titulo_m, album_id_al) VALUES ('$titulo', '$idAl')";
+    $sql = "INSERT INTO artista (titulo_m) VALUES ('$titulo')";
     $result = $conn -> query($sql);
   
     if($result === TRUE){
       $fdb = 1;
-      header('location: album.php?ida='.$idAl.'&alerta='.$fdb);
+      header("location: artists.php?alerta=".$fdb);
     }
     else {
       $fdb = 0;
@@ -39,7 +39,7 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST["Mtitulo"])){
         <form action="" method="post">
           <table id="formTab">
             <tr>
-              <td>Titulo da Musica: </td>
+              <td>Nome do Artista: </td>
               <td><input type="text" name="Mtitulo" required> </td>
             </tr>
             <tr>

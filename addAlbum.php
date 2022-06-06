@@ -10,9 +10,12 @@ if(!$_SESSION["user"]){
 // sql insert inserts the things to insert
 if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST["Mtitulo"])){  
     $titulo = $_POST["Mtitulo"]; 
+    $ano = $_POST["Aano"]; 
     $idAl = $_GET["ida"];
+    $FileNewName = $titulo;
+    require 'includes/webpage/upload.inc.php';
   
-    $sql = "INSERT INTO musica (titulo_m, album_id_al) VALUES ('$titulo', '$idAl')";
+    $sql = "INSERT INTO album (nome_al, ano_al) VALUES ('$titulo', '$ano')";
     $result = $conn -> query($sql);
   
     if($result === TRUE){
@@ -21,7 +24,7 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST["Mtitulo"])){
     }
     else {
       $fdb = 0;
-      header("location: inserir.php?alerta=".$fdb);
+      header("location: erro.php?alerta=".$fdb);
     }
 }
 
@@ -29,14 +32,7 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST["Mtitulo"])){
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="includes/styles/style.css">
-    <title>Project</title>
-</head>
+<?php include("includes/webpage/header.php"); ?>
 <body>
   <!-- NAV -->
     <?php include("includes/webpage/nav.php") ?>
@@ -46,11 +42,19 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST["Mtitulo"])){
         <form action="" method="post">
           <table id="formTab">
             <tr>
-              <td>Titulo da Musica: </td>
+              <td>Titulo do album: </td>
               <td><input type="text" name="Mtitulo" required> </td>
             </tr>
             <tr>
-              <td> </td>
+              <td>Ano de lançamento: </td>
+              <td><input type="text" name="Aano" required> </td>
+            </tr>
+            <tr>
+              <td>Capa do album: </td>
+              <td><input type="file" name="cover" required> </td>
+            </tr>
+            <tr>
+              <td></td>
               <td><input type="submit" value="Adicionar"> </td>
             </tr>
           </table>

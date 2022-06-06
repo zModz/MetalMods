@@ -1,15 +1,14 @@
 <?php 
+session_start();
 require_once("includes/db/db_conn.php");
 
 // sql go BRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
 if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST["Mtitulo"])){  
-    $titulo = $_POST["Mtitulo"]; 
-    $artista = $_POST["Martist"]; 
-    $album = $_POST["Malbum"]; 
-    $ano = $_POST["Mano"];
+    $titulo = $_POST["Mtitulo"];
+    $idAl = $_POST["musicDrop"];
     $idm = $_GET['idm'];
   
-    $sql = "UPDATE musicas SET nome_m='$titulo', artista_m='$artista', album_m='$album', ano_m='$ano' WHERE id_m = '$idm'";
+    $sql = "UPDATE musica SET titulo_m='$titulo', album_id_al='$idAl' WHERE id_m = '$idm'";
     $result = $conn -> query($sql);
   
     if($result === TRUE){
@@ -18,34 +17,31 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST["Mtitulo"])){
     }
     else {
       $fdb = 0;
-      header("location: editar_2.php?idm=".$idm."&alerta=".$fdb);
+      header("location: erro.php?alerta=".$fdb);
     }
 }elseif(isset($_GET['idm'])){
   // get id
   $idm = $_GET['idm'];
-  $sqlUp = "SELECT * FROM musicas WHERE id_m = '$idm'";
+  $sqlUp = "SELECT id_m, titulo_m, id_al, nome_al FROM musica 
+              LEFT JOIN album ON musica.album_id_al = album.id_al
+              WHERE id_m = '$idm'";
 
   $res = mysqli_query($conn, $sqlUp);
   $row = mysqli_fetch_array($res);
 
-  $tituloM = $row["nome_m"]; 
-  $artistaM = $row["artista_m"]; 
-  $albumM = $row["album_m"]; 
-  $anoM = $row["ano_m"];
+  $tituloM = $row["titulo_m"];
+  $idal = $row["id_al"];
+  $nomeAl = $row["nome_al"];
+
+  $sql2 = "SELECT * from album";
+  $res2 = mysqli_query($conn, $sql2);
 }
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="includes/styles/style.css">
-    <title>Project</title>
-</head>
+<?php include("includes/webpage/header.php"); ?>
 <body>
   <!-- NAV -->
     <?php include("includes/webpage/nav.php") ?>
@@ -58,16 +54,15 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST["Mtitulo"])){
               <td><input type="text" name="Mtitulo" value="<?=$tituloM ?>" required> </td>
             </tr>
             <tr>
-              <td title="Separe os artistas por virgulas">Artista(s): </td>
-              <td><input type="text" name="Martist" value="<?=$artistaM ?>" required> </td>
-            </tr>
-            <tr>
               <td>Album: </td>
-              <td><input type="text" name="Malbum" value="<?=$albumM ?>" required> </td>
-            </tr>
-            <tr>
-              <td>Ano de lançamento: </td>
-              <td><input type="number" name="Mano" value="<?=$anoM ?>" required> </td>
+              <td><select name="musicDrop" id="dropMusic">
+                <?php
+                  while($rows = $res2 -> fetch_array()){
+                    $idal2 = $rows["id_al"];
+                    echo '<option value="'.$idal2.'" active>'.$rows["nome_al"].'</option>';
+                  }
+                ?>
+              </select> </td>
             </tr>
             <tr>
               <td> </td>

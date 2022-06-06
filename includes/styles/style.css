@@ -228,6 +228,13 @@ p{
     -o-border-radius: 10px;
 }
 
+#adminMenu{
+    width: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin: .5%;
+}
+
 .easter{
     color: white;
     text-decoration: none;
@@ -255,6 +262,7 @@ p{
 }
 
 .album_banner .albumInfo{
+    width: 50%;
     margin-left: 10px;
     display: flex;
     flex-wrap: wrap;
@@ -297,6 +305,24 @@ p{
 
 .musicShow .songTitle{
     width: 900px;
+}
+
+.albumBtns{
+    margin-top: 1%;
+}
+
+.albumBtns .alBtn{
+    margin-right: 1%;
+    
+}
+
+.songBtns{
+    margin-top: .5%;
+}
+
+.songBtns .sgBtn{
+    margin-right: .5%;
+    
 }
 
 /* MODAL */

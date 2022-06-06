@@ -42,13 +42,31 @@ function AlbmGenre($idal){
                 WHERE id_al = '$ida'";
     $result2 = mysqli_query($conn, $sqlUp2);
     
-    while($rowArt = $result2 -> fetch_assoc()){
-        if($rowArt["id_g"] > 2 && $rowArt["id_al"] == $ida){
-            return ", ".$rowArt["nome_g"];
+    while($rowArt = $result2 -> fetch_array()){
+        if($rowArt["id_g"] > 1 && $rowArt["id_al"] == $ida){
+            echo " ".$rowArt["nome_g"];
         }else{
-            return $rowArt["nome_g"];
+            echo $rowArt["nome_g"];
         }
     }
+}
+
+function artistList($idmu){
+    include("includes/db/db_conn.php");
+    $idm = $idmu;
+    $sqlUp = "SELECT id_m, artista.id_a, artista.nome_a FROM musica 
+                LEFT JOIN musica_has_artista ON musica_id_m = musica.id_m 
+                LEFT JOIN artista ON artista.id_a = musica_has_artista.artista_id_a
+                WHERE id_m = '$idm'";
+    $result = mysqli_query($conn, $sqlUp);
+
+    while($rowArt = $result -> fetch_array()){
+        if($rowArt["id_a"] > 1 && $rowArt["id_m"] == $idm){
+            echo ", ".$rowArt["nome_a"];
+        }else{
+            echo $rowArt["nome_a"];
+        }
+    } 
 }
 
 

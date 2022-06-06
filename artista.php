@@ -8,17 +8,15 @@ if(isset($_GET['ida'])){
     $ida = $_GET['ida'];
     
     // ALBUM INFO
-    $sqlUp = "SELECT titulo_m, id_al, nome_al, ano_al, nome_a FROM album 
-              LEFT JOIN musica ON album.id_al = musica.album_id_al 
-              LEFT JOIN musica_has_artista ON musica_id_m = musica.id_m 
-              LEFT JOIN artista ON artista.id_a = musica_has_artista.artista_id_a
-              WHERE id_al = '$ida'";
+    $sqlUp = "SELECT * FROM artista 
+              WHERE id_a = '$ida'";
     $result = mysqli_query($conn, $sqlUp);
     
     // SONG LIST
-    $sqlUp1 = "SELECT titulo_m, id_al, nome_al, ano_al, id_m FROM album 
-               LEFT JOIN musica ON album.id_al = musica.album_id_al 
-               WHERE id_al = '$ida'";
+    $sqlUp1 = "SELECT titulo_m, id_m, nome_a, id_a FROM artista 
+               LEFT JOIN musica_has_artista ON artista_id_a = id_a
+               LEFT JOIN musica ON id_m = musica_id_m 
+               WHERE id_a = '$ida'";
     $result1 = mysqli_query($conn, $sqlUp1);
 
     
@@ -46,24 +44,15 @@ function clean($string) {
             <?php
                 if($row = $result -> fetch_assoc()){                    
                     echo '<div class="album_banner">';
-                    $albm = $row["nome_al"];
-                    $nAlbm = clean($albm);
-                    if(file_exists('media/'.$nAlbm.'.jpg')){
-                        echo '<img class="songImg" src="media/'.$nAlbm.'.jpg" alt="default album cover">';
-                    }
-                    else{
-                        echo '<img class="songImg" src="media/default-album-art.jpg" alt="default album cover">';
-                    }
                     echo    '<div class="albumInfo">';
-                    echo        '<p class="albumTitle">'.$row["nome_al"].'</p>';
-                    echo        '<p class="albumAno">'.$row["nome_a"].' • '.$row["ano_al"].' • '.$num_rows.' MUSICAS • ';
-                                    AlbmGenre($row["id_al"]);
-                    echo        '</p>';
+                    echo        '<p class="albumTitle">'.$row["nome_a"].'</p>';
+                    // echo        '<p class="albumAno">'.$row["nome_a"].' • '.$row["ano_al"].' • '.$num_rows.' MUSICAS • ';
+                    //                 AlbmGenre($row["id_al"]);
+                    // echo        '</p>';
                     if(isset($_SESSION['user'])){
                         echo        '<div class="albumBtns">';
-                        echo            '<a class="alBtn" href="addMusic.php?ida='.$row["id_al"].'">ADD MUSICA</a>';
-                        echo            '<a class="alBtn" href="editAlbum.php?ida='.$row["id_al"].'">EDIT ALBUM</a>';
-                        echo            '<a class="alBtn" href="removerAlbum.php?ida='.$row["id_al"].'" onclick="verificar(event);">REMOVE ALBUM</a>';
+                        echo            '<a class="alBtn" href="editArtista.php?ida='.$row["id_a"].'">EDIT ARTISTA</a>';
+                        echo            '<a class="alBtn" href="removerArtista.php?ida='.$row["id_a"].'" onclick="verificar(event);">REMOVE ARTISTA</a>';
                         echo        '</div>';
                     }
                     echo    '</div>';
@@ -75,13 +64,13 @@ function clean($string) {
                         while($row = $result1 -> fetch_assoc()){                    
                             echo    '<div class="songInfo">';
                             echo        '<p class="songTitle">'.$row["titulo_m"].'</p>';
-                            echo        '<p class="songYear">';
-                                            artistList($row["id_m"]);
-                            echo        '</p>';
+                            // echo        '<p class="songYear">';
+                            //                 artistList($row["id_m"]);
+                            // echo        '</p>';
                             if(isset($_SESSION["user"])){
                                 echo        '<div class="songBtns">';
                                 echo            '<a class="sgBtn" href="editMusic.php?idm='.$row["id_m"].'">edit</a>';
-                                echo            '<a class="sgBtn" href="removerMusic.php?idm='.$row["id_m"].'&ida='.$row["id_al"].'" onclick="verificar(event);">remove</a>';
+                                echo            '<a class="sgBtn" href="removerMusic.php?idm='.$row["id_m"].'&ida='.$row["id_a"].'" onclick="verificar(event);">remove</a>';
                                 echo        '</div>';
                             }
                             echo    '</div>';

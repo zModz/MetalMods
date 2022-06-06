@@ -4,7 +4,7 @@ require_once("includes/db/db_conn.php");
 include("includes/webpage/funcs.php");
 
 // sql shenenigans
-$sql = "SELECT * FROM album ORDER BY nome_al ASC";
+$sql = "SELECT * FROM artista ORDER BY nome_a ASC";
 // $sql = "SELECT titulo_m, nome_al, ano_al FROM musica RIGHT JOIN album ON musica.album_id_al = album.id_al ORDER BY titulo_m ASC";
 $result = $conn -> query($sql);
 
@@ -36,7 +36,7 @@ else{
         <?php 
             if(isset($_SESSION["user"])){
                 echo '<div id="adminMenu">';
-                echo    '<a href="addAlbum.php">ADD ALBUM</a>';
+                echo    '<a href="addArtista.php">ADD ARTISTA</a>';
                 echo '</div>';
 
             }
@@ -44,21 +44,13 @@ else{
             echo $msgAlerta;
 
             if($result -> num_rows > 0){
-                while($row = $result -> fetch_assoc()){                    
-                    $albm = $row["nome_al"];
-                    $nAlbm = clean($albm);
+                while($row = $result -> fetch_assoc()){     
 
-                    echo '<a class="boxLink" href="album.php?ida='.$row["id_al"].'">';
+                    echo '<a class="boxLink" href="artista.php?ida='.$row["id_a"].'">';
                     echo '<div class="box">';
-                    if(file_exists('media/'.$nAlbm.'.jpg')){
-                        echo '<img class="songImg" src="media/'.$nAlbm.'.jpg" alt="default album cover">';
-                    }
-                    else{
-                        echo '<img class="songImg" src="media/default-album-art.jpg" alt="default album cover">';
-                    }
                     echo    '<div class="songInfo">';
-                    echo        '<p class="songTitle" title="'.$row["nome_al"].'">'.$row["nome_al"].'</p>';
-                    echo        '<p class="songYear">'.$row["ano_al"].'</p>';
+                    echo        '<p class="songTitle" title="'.$row["nome_a"].'">'.$row["nome_a"].'</p>';
+                    // echo        '<p class="songYear">'.$row["ano_al"].'</p>';
                     echo    '</div>';
                     echo '</div>';
                     echo '</a>';
