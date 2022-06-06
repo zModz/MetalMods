@@ -12,13 +12,13 @@ else{
 
 // checks se existe id, remove comforme esse id
 if(isset($_GET['ida'])){
-    $idm = $_GET['ida'];
-    $sqlrm = "DELETE FROM album WHERE id_m = '$ida'";
+    $ida = $_GET['ida'];
+    $sqlrm = "DELETE FROM artista WHERE id_a = '$ida'";
     $res = $conn -> query($sqlrm);
     
     if($res === true){
         $fdb = 1;
-        header("location: index.php?alerta=".$fdb);
+        header("location: artists.php?alerta=".$fdb);
     }
     else{
         $fdb = 0;

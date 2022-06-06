@@ -5,36 +5,29 @@ require_once("includes/db/db_conn.php");
 // sql go BRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
 if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST["Mtitulo"])){  
     $titulo = $_POST["Mtitulo"];
-    $idAl = $_POST["musicDrop"];
-    $idm = $_GET['idm'];
+    $ida = $_GET['ida'];
   
-    $sql = "UPDATE musica SET titulo_m='$titulo', album_id_al='$idAl' WHERE id_m = '$idm'";
+    $sql = "UPDATE artista SET nome_a='$titulo' WHERE id_a = '$ida'";
     $result = $conn -> query($sql);
   
     if($result === TRUE){
       $fdb = 1;
-      header('location: album.php?ida='.$idAl.'&alerta='.$fdb);
+      header('location: artista.php?ida='.$ida.'&alerta='.$fdb);
     }
     else {
       $fdb = 0;
       header("location: erro.php?alerta=".$fdb);
     }
-}elseif(isset($_GET['idm'])){
+}elseif(isset($_GET['ida'])){
   // get id
-  $idm = $_GET['idm'];
-  $sqlUp = "SELECT id_m, titulo_m, id_al, nome_al FROM musica 
-              LEFT JOIN album ON musica.album_id_al = album.id_al
-              WHERE id_m = '$idm'";
+  $ida = $_GET['ida'];
+  $sqlUp = "SELECT * FROM artista
+              WHERE id_a = '$ida'";
 
   $res = mysqli_query($conn, $sqlUp);
   $row = mysqli_fetch_array($res);
 
-  $tituloM = $row["titulo_m"];
-  $idal = $row["id_al"];
-  $nomeAl = $row["nome_al"];
-
-  $sql2 = "SELECT * from album";
-  $res2 = mysqli_query($conn, $sql2);
+  $tituloM = $row["nome_a"];
 }
 
 ?>
@@ -50,19 +43,9 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST["Mtitulo"])){
         <form action="" method="post">
           <table id="formTab">
             <tr>
-              <td>Titulo da Musica: </td>
+              <td>Nome do Artista: </td>
               <td><input type="text" name="Mtitulo" value="<?=$tituloM ?>" required> </td>
             </tr>
-            <tr>
-              <td>Album: </td>
-              <td><select name="musicDrop" id="dropMusic">
-                <?php
-                  while($rows = $res2 -> fetch_array()){
-                    $idal2 = $rows["id_al"];
-                    echo '<option value="'.$idal2.'" active>'.$rows["nome_al"].'</option>';
-                  }
-                ?>
-              </select> </td>
             </tr>
             <tr>
               <td> </td>

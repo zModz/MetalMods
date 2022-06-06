@@ -51,7 +51,7 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST["Mtitulo"])){
             </tr>
             <tr>
               <td>Capa do album: </td>
-              <td><input type="file" name="cover" required> </td>
+              <td><input type="file" name="cover"> </td>
             </tr>
             <tr>
               <td></td>

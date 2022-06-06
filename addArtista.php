@@ -9,10 +9,9 @@ if(!$_SESSION["user"]){
 
 // sql insert inserts the things to insert
 if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST["Mtitulo"])){  
-    $titulo = $_POST["Mtitulo"]; 
-    $idAl = $_GET["ida"];
+    $titulo = $_POST["Mtitulo"];
   
-    $sql = "INSERT INTO artista (titulo_m) VALUES ('$titulo')";
+    $sql = "INSERT INTO artista (nome_a) VALUES ('$titulo')";
     $result = $conn -> query($sql);
   
     if($result === TRUE){

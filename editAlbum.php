@@ -15,7 +15,7 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST["Mtitulo"])){
   
     if($result === TRUE){
       $fdb = 1;
-      header("location: index.php?alerta=".$fdb);
+      header('location: album.php?ida='.$ida.'&alerta='.$fdb);
     }
     else {
       $fdb = 0;

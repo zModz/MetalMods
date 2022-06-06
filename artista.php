@@ -12,12 +12,19 @@ if(isset($_GET['ida'])){
               WHERE id_a = '$ida'";
     $result = mysqli_query($conn, $sqlUp);
     
-    // SONG LIST
+    // SONG LIST VERIFICATION
     $sqlUp1 = "SELECT titulo_m, id_m, nome_a, id_a FROM artista 
                LEFT JOIN musica_has_artista ON artista_id_a = id_a
                LEFT JOIN musica ON id_m = musica_id_m 
                WHERE id_a = '$ida'";
     $result1 = mysqli_query($conn, $sqlUp1);
+
+    // SONG LIST
+    $sqlUp2 = "SELECT titulo_m, id_m, nome_a, id_a FROM artista 
+               LEFT JOIN musica_has_artista ON artista_id_a = id_a
+               LEFT JOIN musica ON id_m = musica_id_m 
+               WHERE id_a = '$ida'";
+    $result2 = mysqli_query($conn, $sqlUp2);
 
     
     
@@ -58,28 +65,30 @@ function clean($string) {
                     echo    '</div>';
                     echo '</div>';
                     echo '<br>';
-                    if($result -> num_rows > 0){
-                        echo '<h1 style="color: white;">MUSICAS</h1>';
-                        echo '<div class="musicShow">';
-                        while($row = $result1 -> fetch_assoc()){                    
-                            echo    '<div class="songInfo">';
-                            echo        '<p class="songTitle">'.$row["titulo_m"].'</p>';
-                            // echo        '<p class="songYear">';
-                            //                 artistList($row["id_m"]);
-                            // echo        '</p>';
-                            if(isset($_SESSION["user"])){
-                                echo        '<div class="songBtns">';
-                                echo            '<a class="sgBtn" href="editMusic.php?idm='.$row["id_m"].'">edit</a>';
-                                echo            '<a class="sgBtn" href="removerMusic.php?idm='.$row["id_m"].'&ida='.$row["id_a"].'" onclick="verificar(event);">remove</a>';
-                                echo        '</div>';
+                    if($row = $result1 -> fetch_assoc()){
+                        if($row["id_m"] !== NULL){
+                            echo '<h1 style="color: white;">MUSICAS</h1>';
+                            echo '<div class="musicShow">';
+                            while($row = $result2 -> fetch_assoc()){                    
+                                echo    '<div class="songInfo">';
+                                echo        '<p class="songTitle">'.$row["titulo_m"].'</p>';
+                                // echo        '<p class="songYear">';
+                                //                 artistList($row["id_m"]);
+                                // echo        '</p>';
+                                if(isset($_SESSION["user"])){
+                                    echo        '<div class="songBtns">';
+                                    echo            '<a class="sgBtn" href="editMusic.php?idm='.$row["id_m"].'">edit</a>';
+                                    echo            '<a class="sgBtn" href="removerMusic.php?idm='.$row["id_m"].'&ida='.$row["id_a"].'" onclick="verificar(event);">remove</a>';
+                                    echo        '</div>';
+                                }
+                                echo    '</div>';
                             }
-                            echo    '</div>';
+                            echo '</div>';
                         }
-                        echo '</div>';
+                        else{
+                            echo "<a class='easter'>Este album não tem musicas!</a>";
+                        }    
                     }
-                    else{
-                        echo "<a class='easter'>Este album não tem musicas!</a>";
-                    }    
                 }
                 else{
                     echo "<a href='https://open.spotify.com/playlist/0O8Oc3snLMOcGjDdi9yKY4?si=9d2c537ba8964904' class='easter'>ID desconhecido!</a>";
